@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SIMFORA - Sistem Terpadu Manajemen Fasilitas Olahraga GraphQL client.">
+  <title>SIMFORA - GraphQL Client Portal</title>
+  <!-- Google Fonts Outfit & Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #0b0f19;
+      --bg-card: rgba(17, 24, 39, 0.7);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --primary: #4f46e5;
+      --primary-hover: #6366f1;
+      --accent-green: #10b981;
+      --accent-blue: #0ea5e9;
+      --accent-purple: #8b5cf6;
+      --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 40%);
+      background-attachment: fixed;
+      font-family: 'Inter', sans-serif;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 50%, #4f46e5 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+      font-weight: 400;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(99, 102, 241, 0.2);
+    }
+
+    h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25);
+    }
+
+    button {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary) 0%, #4338ca 100%);
+      border: none;
+      border-radius: 8px;
+      padding: 0.85rem;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary) 100%);
+      transform: translateY(-1px);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .grid-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      transition: background 0.2s ease;
+    }
+
+    .list-item:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .item-info h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .item-info p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .status-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+
+    .status-available, .status-good {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-green);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .status-maintenance, .status-damaged {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .status-pending {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .status-approved {
+      background: rgba(14, 165, 233, 0.15);
+      color: var(--accent-blue);
+      border: 1px solid rgba(14, 165, 233, 0.3);
+    }
+
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      background: #1e293b;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow);
+      z-index: 1000;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>SIMFORA INTEGRATED GRAPHQL CLIENT</h1>
+    <p class="subtitle">Sistem Terpadu Manajemen Fasilitas Olahraga — Student Portal Portal</p>
+  </header>
+
+  <main>
+    <!-- Left Panel: GraphQL Mutations Forms -->
+    <div style="display: flex; flex-direction: column; gap: 2rem;">
+      <div class="card">
+        <h2>Pesan Lapangan (Add Reservasi)</h2>
+        <form id="reservation-form">
+          <div class="form-group">
+            <label for="res-user">NIM / ID User</label>
+            <input type="text" id="res-user" placeholder="Contoh: 1301210001" required>
+          </div>
+          <div class="form-group">
+            <label for="res-lapangan">Pilih Lapangan</label>
+            <select id="res-lapangan" required>
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="res-date">Tanggal Main</label>
+            <input type="date" id="res-date" required>
+          </div>
+          <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+              <label for="res-start">Jam Mulai</label>
+              <input type="time" id="res-start" required>
+            </div>
+            <div>
+              <label for="res-end">Jam Selesai</label>
+              <input type="time" id="res-end" required>
+            </div>
+          </div>
+          <button type="submit">Kirim Reservasi (Mutation)</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Kelola Inventaris Alat (Add/Update Alat)</h2>
+        <form id="alat-form">
+          <div class="form-group">
+            <label for="alat-code">Kode Alat</label>
+            <input type="text" id="alat-code" placeholder="Contoh: BSK-002" required>
+          </div>
+          <div class="form-group">
+            <label for="alat-name">Nama Alat</label>
+            <input type="text" id="alat-name" placeholder="Contoh: Bola Voli Molten" required>
+          </div>
+          <div class="form-group">
+            <label for="alat-stock">Total Stok</label>
+            <input type="number" id="alat-stock" min="1" value="5" required>
+          </div>
+          <div class="form-group">
+            <label for="alat-condition">Kondisi</label>
+            <select id="alat-condition" required>
+              <option value="GOOD">Baik (GOOD)</option>
+              <option value="DAMAGED">Rusak (DAMAGED)</option>
+            </select>
+          </div>
+          <button type="submit">Tambah/Update Alat (Mutation)</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Right Panel: GraphQL Queries (Live View) -->
+    <div style="display: flex; flex-direction: column; gap: 2rem;">
+      <div class="card">
+        <h2>Daftar Lapangan (Live Query)</h2>
+        <div id="lapangan-list" class="grid-list">
+          <p style="color: var(--text-muted)">Loading lapangan...</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Daftar Alat Olahraga (Live Query)</h2>
+        <div id="alat-list" class="grid-list">
+          <p style="color: var(--text-muted)">Loading alat...</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Reservasi Aktif (Live Query)</h2>
+        <div id="reservasi-list" class="grid-list">
+          <p style="color: var(--text-muted)">Belum ada data reservasi.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" class="notification">Berhasil mengeksekusi GraphQL!</div>
+
+  <script>
+    const GRAPHQL_URL = '/graphql';
+
+    function showToast(message, isError = false) {
+      const toast = document.getElementById('toast');
+      toast.innerText = message;
+      toast.style.borderColor = isError ? 'rgba(239, 68, 68, 0.4)' : 'rgba(16, 185, 129, 0.4)';
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // Generic Fetch for GraphQL
+    async function fetchGraphQL(query, variables = {}) {
+      try {
+        const response = await fetch(GRAPHQL_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ query, variables })
+        });
+        const result = await response.json();
+        if (result.errors) {
+          throw new Error(result.errors[0].message);
+        }
+        return result.data;
+      } catch (err) {
+        showToast(err.message, true);
+        throw err;
+      }
+    }
+
+    // Load Data using Queries
+    async function loadDashboardData() {
+      const query = `
+        query GetDashboardData {
+          getLapangan {
+            id
+            name
+            description
+            status
+          }
+          getAlat {
+            id
+            code
+            name
+            total_stock
+            available_stock
+            condition
+          }
+          getReservasi {
+            id
+            user_id
+            lapangan_id
+            date
+            start_time
+            end_time
+            status
+          }
+        }
+      `;
+
+      try {
+        const data = await fetchGraphQL(query);
+        
+        // 1. Render Lapangan List & Dropdown
+        const lapanganList = document.getElementById('lapangan-list');
+        const selectLapangan = document.getElementById('res-lapangan');
+        lapanganList.innerHTML = '';
+        selectLapangan.innerHTML = '';
+
+        data.getLapangan.forEach(l => {
+          // List
+          const item = document.createElement('div');
+          item.className = 'list-item';
+          item.innerHTML = `
+            <div class="item-info">
+              <h3>${l.name}</h3>
+              <p>${l.description || 'Tidak ada deskripsi'}</p>
+            </div>
+            <span class="status-badge status-${l.status.toLowerCase()}">${l.status}</span>
+          `;
+          lapanganList.appendChild(item);
+
+          // Dropdown (Only show if available)
+          if (l.status === 'AVAILABLE') {
+            const opt = document.createElement('option');
+            opt.value = l.id;
+            opt.innerText = l.name;
+            selectLapangan.appendChild(opt);
+          }
+        });
+
+        // 2. Render Alat List
+        const alatList = document.getElementById('alat-list');
+        alatList.innerHTML = '';
+        data.getAlat.forEach(a => {
+          const item = document.createElement('div');
+          item.className = 'list-item';
+          item.innerHTML = `
+            <div class="item-info">
+              <h3>${a.name} [${a.code}]</h3>
+              <p>Stok: ${a.available_stock} / ${a.total_stock}</p>
+            </div>
+            <span class="status-badge status-${a.condition.toLowerCase()}">${a.condition}</span>
+          `;
+          alatList.appendChild(item);
+        });
+
+        // 3. Render Reservasi List
+        const reservasiList = document.getElementById('reservasi-list');
+        reservasiList.innerHTML = '';
+        if (data.getReservasi.length === 0) {
+          reservasiList.innerHTML = '<p style="color: var(--text-muted)">Belum ada data reservasi.</p>';
+        } else {
+          data.getReservasi.forEach(r => {
+            const item = document.createElement('div');
+            item.className = 'list-item';
+            item.innerHTML = `
+              <div class="item-info">
+                <h3>Reservasi oleh ${r.user_id}</h3>
+                <p>Tanggal: ${r.date} | Waktu: ${r.start_time} - ${r.end_time}</p>
+              </div>
+              <span class="status-badge status-${r.status.toLowerCase()}">${r.status}</span>
+            `;
+            reservasiList.appendChild(item);
+          });
+        }
+
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // Submit Reservation Mutation
+    document.getElementById('reservation-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const user_id = document.getElementById('res-user').value;
+      const lapangan_id = document.getElementById('res-lapangan').value;
+      const date = document.getElementById('res-date').value;
+      const start_time = document.getElementById('res-start').value;
+      const end_time = document.getElementById('res-end').value;
+
+      // Simple validation for past date
+      const selectedDate = new Date(date + 'T' + start_time);
+      if (selectedDate < new Date()) {
+        showToast("Waktu reservasi harus di masa depan!", true);
+        return;
+      }
+
+      const mutation = `
+        mutation CreateBooking($user_id: String!, $lapangan_id: String!, $date: String!, $start_time: String!, $end_time: String!) {
+          addReservasi(user_id: $user_id, lapangan_id: $lapangan_id, date: $date, start_time: $start_time, end_time: $end_time) {
+            id
+            status
+          }
+        }
+      `;
+
+      try {
+        await fetchGraphQL(mutation, { user_id, lapangan_id, date, start_time, end_time });
+        showToast("Reservasi berhasil dikirim!");
+        document.getElementById('reservation-form').reset();
+        await loadDashboardData();
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
+    // Submit Alat Mutation (Add or Update)
+    document.getElementById('alat-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const code = document.getElementById('alat-code').value;
+      const name = document.getElementById('alat-name').value;
+      const total_stock = parseInt(document.getElementById('alat-stock').value);
+      const condition = document.getElementById('alat-condition').value;
+
+      const mutation = `
+        mutation AddAlat($code: String!, $name: String!, $total_stock: Int!, $condition: AlatCondition!) {
+          addAlat(code: $code, name: $name, total_stock: $total_stock, condition: $condition) {
+            id
+            name
+          }
+        }
+      `;
+
+      try {
+        await fetchGraphQL(mutation, { code, name, total_stock, condition });
+        showToast("Alat berhasil ditambahkan!");
+        document.getElementById('alat-form').reset();
+        await loadDashboardData();
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
+    // Initial Load
+    window.addEventListener('DOMContentLoaded', loadDashboardData);
+  </script>
+</body>
+</html>
