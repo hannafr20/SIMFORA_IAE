@@ -38,6 +38,10 @@ type DBContextType = {
   addJadwalBlokir: (data: Omit<JadwalBlokir, 'id'>) => void;
   updateJadwalBlokir: (id: string, data: Partial<JadwalBlokir>) => void;
   deleteJadwalBlokir: (id: string) => void;
+
+  addLapangan: (data: Omit<Lapangan, 'id'>) => void;
+  updateLapangan: (id: string, data: Partial<Lapangan>) => void;
+  deleteLapangan: (id: string) => void;
 };
 
 const DBContext = createContext<DBContextType | undefined>(undefined);
@@ -182,6 +186,22 @@ export const DBProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     setJadwalBlokir(updated); save('jadwalBlokir', updated);
   };
 
+  const addLapangan = (data: Omit<Lapangan, 'id'>) => {
+    const newL: Lapangan = { ...data, id: 'L' + Date.now().toString() };
+    const updated = [...lapangan, newL];
+    setLapangan(updated); save('lapangan', updated);
+  };
+
+  const updateLapangan = (id: string, data: Partial<Lapangan>) => {
+    const updated = lapangan.map(l => l.id === id ? { ...l, ...data } : l);
+    setLapangan(updated); save('lapangan', updated);
+  };
+
+  const deleteLapangan = (id: string) => {
+    const updated = lapangan.filter(l => l.id !== id);
+    setLapangan(updated); save('lapangan', updated);
+  };
+
   return (
     <DBContext.Provider value={{
       lapangan, reservasi, alat, peminjaman, laporan, jadwalBlokir,
@@ -189,7 +209,8 @@ export const DBProvider: React.FC<{ children: React.ReactNode }> = ({ children }
       addPeminjaman, updatePeminjamanStatus, updatePeminjamanContent, deletePeminjaman,
       addLaporan, updateLaporanStatus, updateLaporanContent, deleteLaporan,
       addAlat, updateAlat, deleteAlat,
-      addJadwalBlokir, updateJadwalBlokir, deleteJadwalBlokir
+      addJadwalBlokir, updateJadwalBlokir, deleteJadwalBlokir,
+      addLapangan, updateLapangan, deleteLapangan
     }}>
       {children}
     </DBContext.Provider>
