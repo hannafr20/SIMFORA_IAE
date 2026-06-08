@@ -49,7 +49,9 @@ const DBContext = createContext<DBContextType | undefined>(undefined);
 const initialLapangan: Lapangan[] = [
   { id: 'L1', name: 'Lapangan Basket Outdoor', description: 'Lapangan basket standar FIBA', status: 'AVAILABLE' },
   { id: 'L2', name: 'Lapangan Futsal Indoor', description: 'Rumput sintetis', status: 'AVAILABLE' },
-  { id: 'L3', name: 'Lapangan Tenis', description: 'Hard court', status: 'MAINTENANCE' },
+  { id: 'L3', name: 'Lapangan Tenis', description: 'Hard court', status: 'AVAILABLE' },
+  { id: 'L4', name: 'Lapangan Voli', description: 'Kualitas lantai taraflex premium', status: 'AVAILABLE' },
+  { id: 'L5', name: 'Lapangan Bulu Tangkis', description: 'Karpet lapangan standar PBSI', status: 'AVAILABLE' },
 ];
 
 const initialAlat: Alat[] = [

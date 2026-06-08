@@ -622,7 +622,14 @@ const MahasiswaDashboard = ({ currentTab, setTab }: { currentTab: StudentTabs, s
               </div>
               <div className="form-group">
                 <label className="form-label">Tanggal Bermain</label>
-                <input type="date" className="form-input" value={resDate} onChange={e => setResDate(e.target.value)} required />
+                <input 
+                  type="date" 
+                  className="form-input" 
+                  value={resDate} 
+                  onChange={e => setResDate(e.target.value)} 
+                  min={new Date().toISOString().split('T')[0]}
+                  required 
+                />
               </div>
               <div className="form-group" style={{ marginBottom: '2rem' }}>
                 <label className="form-label">Jam Mulai</label>
@@ -710,7 +717,14 @@ const MahasiswaDashboard = ({ currentTab, setTab }: { currentTab: StudentTabs, s
               </div>
               <div className="form-group" style={{ marginBottom: '2rem' }}>
                 <label className="form-label">Tanggal & Jam Pengembalian</label>
-                <input type="datetime-local" className="form-input" value={pinjamReturn} onChange={e => setPinjamReturn(e.target.value)} required />
+                <input 
+                  type="datetime-local" 
+                  className="form-input" 
+                  value={pinjamReturn} 
+                  onChange={e => setPinjamReturn(e.target.value)} 
+                  min={new Date().toISOString().slice(0, 16)}
+                  required 
+                />
               </div>
               <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
                 <button type="button" className="btn btn-outline" onClick={() => setIsPinjamModalOpen(false)}>Batal</button>
